@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Competition Law Lab | Law Matters Online Academy</title>
+  <style>
+    :root{
+      --bg:#070b18; --panel:#0e1630; --ink:#eaf1ff; --muted:#9fb0cc;
+      --p1:#7cc0ff; --p2:#8ef1e8; --p3:#b98bff; --p4:#ffd580;
+      --br:18px; --glass:rgba(255,255,255,.04); --stroke:rgba(124,192,255,.25);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:radial-gradient(1200px 800px at 15% -10%,#121a3a 0%,var(--bg) 60%);color:var(--ink);font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background:
+      radial-gradient(2px 2px at 18% 30%, rgba(255,255,255,.08) 0, transparent 60%),
+      radial-gradient(2px 2px at 72% 58%, rgba(255,255,255,.06) 0, transparent 60%),
+      radial-gradient(2px 2px at 40% 82%, rgba(255,255,255,.04) 0, transparent 60%);}    
+    header{padding:22px 16px 8px;max-width:1200px;margin:0 auto}
+    h1{font-size:clamp(24px,4vw,32px);margin:0 0 6px;font-weight:800;letter-spacing:.2px;background:linear-gradient(90deg,#cde5ff,#e7d6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+    p.lead{margin:0 0 16px;color:var(--muted)}
+
+    .wrap{max-width:1200px;margin:0 auto;padding:10px 16px 36px;display:grid;gap:16px}
+    .row{display:grid;gap:16px}
+    @media(min-width:1100px){.row{grid-template-columns:360px 1fr}}
+
+    .card{position:relative;background:linear-gradient(180deg,var(--glass),rgba(255,255,255,.02));border:1px solid var(--stroke);border-radius:var(--br);box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .panel{padding:16px}
+    h2{font-size:16px;margin:2px 0 10px;color:#cfe1ff}
+
+    .tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .tab{padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);background:#0f1b34;color:#d8e6ff;cursor:pointer;font-size:12px}
+    .tab[aria-selected="true"]{background:linear-gradient(90deg,var(--p1),var(--p3));color:#0b1226;font-weight:800}
+
+    .slider{display:grid;grid-template-columns:1fr 72px;gap:10px;align-items:center;margin:10px 0}
+    label{font-size:13px;color:#dbe7ff}
+    input[type=range]{-webkit-appearance:none;width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--p1),var(--p2));outline:none;box-shadow:0 0 0 1px rgba(124,192,255,.2) inset, 0 6px 18px rgba(124,192,255,.15)}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#0a122a;border:2px solid #bcdfff;box-shadow:0 0 0 3px rgba(124,192,255,.35)}
+    .val{font-variant-numeric:tabular-nums;background:#0c1637;border:1px solid var(--stroke);border-radius:12px;padding:6px 8px;text-align:center;color:#cfe1ff;font-size:12px}
+
+    .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    @media(min-width:1100px){.kpis{grid-template-columns:repeat(4,1fr)}}
+    .kpi{padding:14px;border-radius:14px;background:linear-gradient(180deg,#0f1936,#0b1226);border:1px solid var(--stroke);transition:transform .12s ease, box-shadow .12s ease}
+    .kpi:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(124,192,255,.15)}
+    .kpi h4{margin:0 0 6px;font-size:12px;color:#aab9d6;display:flex;align-items:center;gap:6px}
+    .kpi h4 i{width:8px;height:8px;border-radius:50%;display:inline-block;background:linear-gradient(90deg,var(--p1),var(--p3))}
+    .big{font-size:24px;font-weight:800}
+    .bar{height:10px;border-radius:999px;background:#12204a;overflow:hidden;border:1px solid var(--stroke)}
+    .bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--p1),var(--p2),var(--p3))}
+
+    .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+
+    .footer{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px;padding:10px 14px;border-top:1px solid var(--stroke);border-radius:0 0 var(--br) var(--br)}
+
+    details.sources{margin-top:10px}
+    details.sources summary{cursor:pointer;color:#cfe1ff}
+    .src{font-size:12px;line-height:1.45;color:#b8c6e6;padding-left:6px}
+    .src b{color:#e2edff}
+    .mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace}
+
+    .pill{background:#0f1b34;border:1px solid var(--stroke);color:#cfe1ff;padding:8px 10px;border-radius:999px;text-align:center;font-size:12px;cursor:pointer}
+    .pill:hover{filter:brightness(1.12)}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Competition Law Lab</h1>
+    <p class="lead">Interactive modules for abuse of dominance, anticompetitive agreements, and merger control. Switch jurisdictions, adjust assumptions, and see how legal outcomes shift. Hover any control or metric to view the literature and provisions behind it.</p>
+  </header>
+
+  <main class="wrap">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-tab="dominance">Abuse of Dominance</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="agreements">Anticompetitive Agreements</button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="merger">Merger Control</button>
+    </div>
+
+    <section class="row" id="panel-dominance" role="tabpanel">
+      <div class="card">
+        <div class="panel">
+          <h2>Inputs</h2>
+          <div class="grid2">
+            <div class="slider" data-key="priceDelta" title="SSNIP increment used for market definition (typically 5–10 percent).">
+              <label>SSNIP test price increase</label>
+              <output class="val" id="priceDeltaVal">5</output>
+              <input type="range" id="priceDelta" min="1" max="15" value="5" step="1"/>
+            </div>
+            <div class="slider" data-key="elasticity" title="Cross‑price elasticity as a proxy for substitutability across candidate products.">
+              <label>Cross-price elasticity</label>
+              <output class="val" id="elasticityVal">1.2</output>
+              <input type="range" id="elasticity" min="0" max="3" value="1.2" step="0.1"/>
+            </div>
+            <div class="slider" data-key="barriers" title="Entry barriers such as sunk costs, regulation, access to data, network effects.">
+              <label>Barriers to entry</label>
+              <output class="val" id="barriersVal">60</output>
+              <input type="range" id="barriers" min="0" max="100" value="60" step="1"/>
+            </div>
+            <div class="slider" data-key="buyerPower" title="Countervailing buyer power can constrain market power even with high shares.">
+              <label>Buyer power</label>
+              <output class="val" id="buyerPowerVal">30</output>
+              <input type="range" id="buyerPower" min="0" max="100" value="30" step="1"/>
+            </div>
+          </div>
+
+          <h2 style="margin-top:6px">Market Shares</h2>
+          <div class="grid2">
+            <div class="slider" data-key="s1" title="Firm 1 market share.">
+              <label>Firm 1 share</label>
+              <output class="val" id="s1Val">55</output>
+              <input type="range" id="s1" min="0" max="100" value="55" step="1"/>
+            </div>
+            <div class="slider" data-key="s2" title="Firm 2 market share.">
+              <label>Firm 2 share</label>
+              <output class="val" id="s2Val">15</output>
+              <input type="range" id="s2" min="0" max="100" value="15" step="1"/>
+            </div>
+            <div class="slider" data-key="s3" title="Firm 3 market share.">
+              <label>Firm 3 share</label>
+              <output class="val" id="s3Val">10</output>
+              <input type="range" id="s3" min="0" max="100" value="10" step="1"/>
+            </div>
+            <div class="slider" data-key="s4" title="Firm 4 market share.">
+              <label>Firm 4 share</label>
+              <output class="val" id="s4Val">8</output>
+              <input type="range" id="s4" min="0" max="100" value="8" step="1"/>
+            </div>
+          </div>
+
+          <h2 style="margin-top:8px">Jurisdiction</h2>
+          <div class="grid2">
+            <button class="pill" data-j="eu">EU</button>
+            <button class="pill" data-j="india">India</button>
+            <button class="pill" data-j="us">US</button>
+          </div>
+
+          <details class="sources" style="margin-top:10px">
+            <summary>Sources used in this module</summary>
+            <div class="src">
+              <p><b>Market definition:</b> EU Commission Notice on Market Definition; United Brands (27/76); SSNIP test. India: CCI practice under s. 2(r), 2(s), 19(7) Competition Act, 2002. US: DOJ–FTC approach to substitutability.</p>
+              <p><b>Dominance thresholds and factors:</b> EU: TFEU art. 102; Hoffmann-La Roche (85/76). India: s. 4 and factors in s. 19(4). US: monopolization under Sherman Act §2, market power assessment.</p>
+              <p><b>Abuse typologies:</b> EU cases Intel (C‑413/14 P), Google Shopping (T‑612/17), Microsoft (T‑201/04). India: CCI jurisprudence on exclusivity, refusal to deal, predation. US: Brooke Group (509 U.S. 209) for predatory pricing.</p>
+            </div>
+          </details>
+        </div>
+        <div class="footer"><span class="mono" id="tip1">Hover any control for sources</span><span class="mono" id="sum1"></span></div>
+      </div>
+
+      <div class="card">
+        <div class="panel">
+          <h2>Results</h2>
+          <div class="kpis">
+            <div class="kpi" data-out="hhi" title="HHI is the sum of squared market shares. Common screen for concentration."><h4><i></i>HHI</h4><div class="big" id="hhi">–</div><div class="bar"><i id="b_hhi" style="width:0%"></i></div></div>
+            <div class="kpi" data-out="dominance" title="Composite dominance score from shares, HHI, barriers, buyer power."><h4><i></i>Dominance score</h4><div class="big" id="dom">–</div><div class="bar"><i id="b_dom" style="width:0%"></i></div></div>
+            <div class="kpi" data-out="abuseRisk" title="Likelihood that the conduct qualifies as abuse given structure and facts."><h4><i></i>Abuse risk</h4><div class="big" id="abuse">–</div><div class="bar"><i id="b_abuse" style="width:0%"></i></div></div>
+            <div class="kpi" data-out="outcome" title="Indicative legal outcome under the selected jurisdiction."><h4><i></i>Indicative outcome</h4><div class="big" id="outcome">–</div></div>
+          </div>
+
+          <h2 style="margin-top:10px">Conduct selector</h2>
+          <div class="grid2">
+            <label><input type="checkbox" class="cond" value="predatory"/> Predatory pricing</label>
+            <label><input type="checkbox" class="cond" value="margin"/> Margin squeeze</label>
+            <label><input type="checkbox" class="cond" value="tying"/> Tying/bundling</label>
+            <label><input type="checkbox" class="cond" value="exclusive"/> Exclusivity</label>
+            <label><input type="checkbox" class="cond" value="selfpref"/> Self‑preferencing</label>
+            <label><input type="checkbox" class="cond" value="refusal"/> Refusal to supply</label>
+          </div>
+        </div>
+        <div class="footer"><span class="mono" id="tip1b">Hover a metric for sources</span><span class="mono" id="sum1b"></span></div>
+      </div>
+    </section>
+
+    <section class="row" id="panel-agreements" role="tabpanel" hidden>
+      <div class="card">
+        <div class="panel">
+          <h2>Inputs</h2>
+          <div class="grid2">
+            <div class="slider" data-key2="horizShare" title="Combined market share of cartel participants.">
+              <label>Combined share (horizontal)</label>
+              <output class="val" id="horizShareVal">60</output>
+              <input type="range" id="horizShare" min="0" max="100" value="60" step="1"/>
+            </div>
+            <div class="slider" data-key2="evidence" title="Strength of evidence of agreement or concerted practice.">
+              <label>Evidence strength</label>
+              <output class="val" id="evidenceVal">70</output>
+              <input type="range" id="evidence" min="0" max="100" value="70" step="1"/>
+            </div>
+            <div class="slider" data-key2="transparency" title="Market transparency facilitating coordination.">
+              <label>Market transparency</label>
+              <output class="val" id="transparencyVal">50</output>
+              <input type="range" id="transparency" min="0" max="100" value="50" step="1"/>
+            </div>
+            <div class="slider" data-key2="verticalShare" title="Supplier or buyer share relevant for vertical restraints.">
+              <label>Party share (vertical)</label>
+              <output class="val" id="verticalShareVal">25</output>
+              <input type="range" id="verticalShare" min="0" max="100" value="25" step="1"/>
+            </div>
+          </div>
+
+          <h2 style="margin-top:6px">Agreement Type</h2>
+          <div class="grid2">
+            <select id="horizType" title="Horizontal restrictions often treated as hardcore in EU and per se in US.">
+              <option>Price fixing</option>
+              <option>Market allocation</option>
+              <option>Bid rigging</option>
+              <option>Output restriction</option>
+            </select>
+            <select id="vertType" title="Vertical restraints assessed with market share thresholds and efficiencies.">
+              <option>Resale price maintenance</option>
+              <option>Exclusive distribution</option>
+              <option>Selective distribution</option>
+              <option>Tying</option>
+            </select>
+          </div>
+
+          <details class="sources" style="margin-top:10px">
+            <summary>Sources used in this module</summary>
+            <div class="src">
+              <p><b>EU:</b> TFEU art. 101; Guidelines on Horizontal and Vertical Agreements; Hardcore restrictions; Block Exemption Regulations.</p>
+              <p><b>India:</b> Competition Act, 2002 s. 3 and s. 19(3) factors; CCI decisional practice on RPM, exclusivity, and cartels.</p>
+              <p><b>US:</b> Sherman Act §1; rule of reason vs per se; RPM after Leegin (551 U.S. 877).</p>
+            </div>
+          </details>
+        </div>
+        <div class="footer"><span class="mono" id="tip2">Hover any control for sources</span><span class="mono" id="sum2"></span></div>
+      </div>
+
+      <div class="card">
+        <div class="panel">
+          <h2>Results</h2>
+          <div class="kpis">
+            <div class="kpi" data-out2="hardcore"><h4><i></i>Hardcore risk</h4><div class="big" id="hardcore">–</div><div class="bar"><i id="b_hardcore" style="width:0%"></i></div></div>
+            <div class="kpi" data-out2="effect"><h4><i></i>Anticompetitive effects</h4><div class="big" id="ae">–</div><div class="bar"><i id="b_ae" style="width:0%"></i></div></div>
+            <div class="kpi" data-out2="exemption"><h4><i></i>Exemption likelihood</h4><div class="big" id="exempt">–</div><div class="bar"><i id="b_exempt" style="width:0%"></i></div></div>
+            <div class="kpi" data-out2="agreOutcome"><h4><i></i>Indicative outcome</h4><div class="big" id="agreOutcome">–</div></div>
+          </div>
+        </div>
+        <div class="footer"><span class="mono" id="tip2b">Hover a metric for sources</span><span class="mono" id="sum2b"></span></div>
+      </div>
+    </section>
+
+    <section class="row" id="panel-merger" role="tabpanel" hidden>
+      <div class="card">
+        <div class="panel">
+          <h2>Inputs</h2>
+          <div class="grid2">
+            <div class="slider" data-key3="preHHI" title="Approximate pre‑merger HHI for the focal market.">
+              <label>Pre‑merger HHI</label>
+              <output class="val" id="preHHIVal">1800</output>
+              <input type="range" id="preHHI" min="0" max="10000" value="1800" step="50"/>
+            </div>
+            <div class="slider" data-key3="deltaHHI" title="Increase in HHI caused by the merger (sum of 2*share1*share2).">
+              <label>ΔHHI</label>
+              <output class="val" id="deltaHHIVal">250</output>
+              <input type="range" id="deltaHHI" min="0" max="5000" value="250" step="10"/>
+            </div>
+            <div class="slider" data-key3="efficiencies" title="Cognizable merger‑specific efficiencies reducing harm.">
+              <label>Efficiencies score</label>
+              <output class="val" id="efficienciesVal">30</output>
+              <input type="range" id="efficiencies" min="0" max="100" value="30" step="1"/>
+            </div>
+            <div class="slider" data-key3="entryMerger" title="Likelihood of timely, likely, and sufficient entry.">
+              <label>Entry likelihood</label>
+              <output class="val" id="entryMergerVal">40</output>
+              <input type="range" id="entryMerger" min="0" max="100" value="40" step="1"/>
+            </div>
+          </div>
+
+          <h2 style="margin-top:6px">Merger Type</h2>
+          <div class="grid2">
+            <select id="mergerType">
+              <option>Horizontal</option>
+              <option>Vertical</option>
+              <option>Conglomerate</option>
+            </select>
+            <select id="jurMerger">
+              <option value="eu">EU</option>
+              <option value="india">India</option>
+              <option value="us">US</option>
+            </select>
+          </div>
+
+          <details class="sources" style="margin-top:10px">
+            <summary>Sources used in this module</summary>
+            <div class="src">
+              <p><b>HHI screens:</b> US DOJ–FTC Merger Guidelines (concentration thresholds and ΔHHI screens). EU: Horizontal Merger Guidelines. India: CCI Combination Regulations and decisional practice.</p>
+              <p><b>Vertical/conglomerate effects:</b> EU Non‑Horizontal Merger Guidelines; foreclosure and portfolio effects. India and US analogous analyses.</p>
+              <p><b>Efficiencies and entry:</b> Standards for verifiability and merger‑specificity; timely, likely, sufficient entry tests.</p>
+            </div>
+          </details>
+        </div>
+        <div class="footer"><span class="mono" id="tip3">Hover any control for sources</span><span class="mono" id="sum3"></span></div>
+      </div>
+
+      <div class="card">
+        <div class="panel">
+          <h2>Results</h2>
+          <div class="kpis">
+            <div class="kpi" data-out3="postHHI"><h4><i></i>Post‑merger HHI</h4><div class="big" id="postHHI">–</div><div class="bar"><i id="b_postHHI" style="width:0%"></i></div></div>
+            <div class="kpi" data-out3="screen"><h4><i></i>Screen flag</h4><div class="big" id="screen">–</div></div>
+            <div class="kpi" data-out3="harm"><h4><i></i>Harm risk</h4><div class="big" id="harm">–</div><div class="bar"><i id="b_harm" style="width:0%"></i></div></div>
+            <div class="kpi" data-out3="mergerOutcome"><h4><i></i>Indicative outcome</h4><div class="big" id="mergerOutcome">–</div></div>
+          </div>
+        </div>
+        <div class="footer"><span class="mono" id="tip3b">Hover a metric for sources</span><span class="mono" id="sum3b"></span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Tab logic
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t=>t.addEventListener('click',()=>{
+      tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+      t.setAttribute('aria-selected','true');
+      const id = t.dataset.tab;
+      document.querySelectorAll('[role=tabpanel]').forEach(p=> p.hidden = true);
+      document.getElementById('panel-'+id).hidden = false;
+    }))
+
+    // Jurisdiction defaults for dominance
+    let JUR = 'eu';
+    document.querySelectorAll('[data-j]').forEach(btn=>{
+      btn.addEventListener('click',()=>{JUR = btn.dataset.j; renderDominance();});
+    })
+
+    // Hover source maps
+    const sourceMap = {
+      dominance: {
+        priceDelta: [
+          'EU Commission Notice on Market Definition; SSNIP framework',
+          'India Competition Act 2002 s. 2(r), 2(s), 19(7)',
+          'US DOJ–FTC approach to demand substitutability'
+        ],
+        elasticity: [
+          'United Brands (27/76) on interchangeability and elasticity',
+          'EU Market Definition Notice'
+        ],
+        barriers: [
+          'EU art. 102 case law on entry barriers; India s. 19(4); US §2 monopolization factors'
+        ],
+        buyerPower: [
+          'Countervailing buyer power as a dominance constraint (EU, India, US)'
+        ],
+        s1: ['Market share as prime indicator: Hoffmann‑La Roche (85/76)'],
+        s2: ['Market shares for CR4 and HHI calculations'],
+        s3: ['Market shares for CR4 and HHI calculations'],
+        s4: ['Market shares for CR4 and HHI calculations'],
+        hhi: [
+          'HHI = Σ s_i^2; widely used in merger and dominance screens'
+        ],
+        dominance: [
+          'EU: art. 102; Hoffmann‑La Roche; India: s. 4, 19(4) factors; US §2 assessment'
+        ],
+        abuseRisk: [
+          'Intel (C‑413/14 P); Google Shopping (T‑612/17); exclusivity and margin squeeze doctrines'
+        ],
+        outcome: [
+          'Indicative only; maps structural indicators and conduct to jurisdictional standards'
+        ]
+      },
+      agreements: {
+        horizShare: ['TFEU art. 101; Sherman Act §1; India s. 3(3) presumption for horizontal agreements'],
+        evidence: ['Direct and circumstantial evidence; concerted practice standards'],
+        transparency: ['Facilitating practices and market transparency in collusion'],
+        verticalShare: ['Vertical Block Exemption thresholds; India s. 3(4) analysis'],
+        hardcore: ['EU hardcore restrictions; US per se rules; India s. 3(3)'],
+        effect: ['Rule of reason and effects analysis; India s. 19(3) factors'],
+        exemption: ['EU art. 101(3) exemption; efficiencies and pass‑on; India appreciable adverse effect balancing']
+      },
+      merger: {
+        preHHI: ['HHI pre‑merger level as screen'],
+        deltaHHI: ['ΔHHI = 2*s1*s2 for merging firms; screen thresholds'],
+        efficiencies: ['Cognizable, merger‑specific, verifiable efficiencies'],
+        entryMerger: ['Timely, likely, sufficient entry test'],
+        postHHI: ['Post‑merger HHI = pre + ΔHHI'],
+        screen: ['US DOJ–FTC screens; EU Horizontal Merger Guidelines; India CCI practice'],
+        harm: ['Unilateral and coordinated effects; foreclosure in vertical/conglomerate']
+      }
+    };
+
+    // Utility
+    const clamp01 = x=> Math.max(0,Math.min(1,x));
+    const pct = x=> (x*100).toFixed(0)+'%';
+
+    // DOMINANCE MODULE
+    const D = {
+      priceDelta: document.getElementById('priceDelta'), priceDeltaVal: document.getElementById('priceDeltaVal'),
+      elasticity: document.getElementById('elasticity'), elasticityVal: document.getElementById('elasticityVal'),
+      barriers: document.getElementById('barriers'), barriersVal: document.getElementById('barriersVal'),
+      buyerPower: document.getElementById('buyerPower'), buyerPowerVal: document.getElementById('buyerPowerVal'),
+      s1: document.getElementById('s1'), s1Val: document.getElementById('s1Val'),
+      s2: document.getElementById('s2'), s2Val: document.getElementById('s2Val'),
+      s3: document.getElementById('s3'), s3Val: document.getElementById('s3Val'),
+      s4: document.getElementById('s4'), s4Val: document.getElementById('s4Val'),
+      hhi: document.getElementById('hhi'), b_hhi: document.getElementById('b_hhi'),
+      dom: document.getElementById('dom'), b_dom: document.getElementById('b_dom'),
+      abuse: document.getElementById('abuse'), b_abuse: document.getElementById('b_abuse'),
+      outcome: document.getElementById('outcome'),
+      cond: document.querySelectorAll('.cond'),
+      tipA: document.getElementById('tip1'), tipB: document.getElementById('tip1b'),
+      sumA: document.getElementById('sum1'), sumB: document.getElementById('sum1b')
+    };
+
+    function renderDominance(){
+      // sync outputs
+      ['priceDelta','elasticity','barriers','buyerPower','s1','s2','s3','s4'].forEach(k=>{
+        D[k+'Val'].textContent = D[k].value;
+      });
+      const s1 = +D.s1.value, s2 = +D.s2.value, s3 = +D.s3.value, s4 = +D.s4.value;
+      const shares = [s1,s2,s3,s4];
+      const total = shares.reduce((a,b)=>a+b,0);
+      // normalize if over 100
+      const norm = total>100 ? shares.map(x=> x*100/total) : shares;
+      const HHI = Math.round(norm.reduce((acc,v)=> acc + Math.pow(v,2),0));
+      D.hhi.textContent = HHI;
+      D.b_hhi.style.width = Math.min(100, HHI/100).toFixed(0)+'%';
+
+      // Dominance score
+      const barriers = +D.barriers.value/100;
+      const buyerP = +D.buyerPower.value/100;
+      const sharePower = Math.min(1, (norm[0]/100)*1.4 + (HHI/10000)*0.4);
+      const domScore = clamp01(0.55*sharePower + 0.30*barriers - 0.25*buyerP);
+      D.dom.textContent = pct(domScore);
+      D.b_dom.style.width = (domScore*100).toFixed(0)+'%';
+
+      // Abuse risk boosts from chosen conduct
+      let conductBoost = 0; D.cond.forEach(c=>{ if(c.checked) conductBoost += 0.12; });
+      const abuseRisk = clamp01(0.6*domScore + conductBoost);
+      D.abuse.textContent = pct(abuseRisk); D.b_abuse.style.width = (abuseRisk*100).toFixed(0)+'%';
+
+      // Outcome by jurisdiction
+      let outTxt = 'Further analysis needed';
+      if(JUR==='eu'){
+        if(domScore>0.6 && abuseRisk>0.6) outTxt = 'Likely abuse (art. 102)';
+      } else if(JUR==='india'){
+        if(domScore>0.6 && abuseRisk>0.6) outTxt = 'Likely contravention (s. 4)';
+      } else {
+        if(domScore>0.6 && abuseRisk>0.6) outTxt = 'Risk of §2 monopolization';
+      }
+      D.outcome.textContent = outTxt;
+
+      D.sumA.textContent = `HHI=${HHI}  dom=${(domScore*100).toFixed(0)}%  abuse=${(abuseRisk*100).toFixed(0)}%  [${JUR.toUpperCase()}]`;
+    }
+
+    document.querySelectorAll('#panel-dominance input').forEach(el=> el.addEventListener('input', renderDominance));
+    document.querySelectorAll('[data-j]').forEach(el=> el.addEventListener('click', renderDominance));
+    D.cond.forEach(c=> c.addEventListener('change', renderDominance));
+
+    // AGREEMENTS MODULE
+    const A = {
+      horizShare: document.getElementById('horizShare'), horizShareVal: document.getElementById('horizShareVal'),
+      evidence: document.getElementById('evidence'), evidenceVal: document.getElementById('evidenceVal'),
+      transparency: document.getElementById('transparency'), transparencyVal: document.getElementById('transparencyVal'),
+      verticalShare: document.getElementById('verticalShare'), verticalShareVal: document.getElementById('verticalShareVal'),
+      horizType: document.getElementById('horizType'), vertType: document.getElementById('vertType'),
+      hardcore: document.getElementById('hardcore'), b_hardcore: document.getElementById('b_hardcore'),
+      ae: document.getElementById('ae'), b_ae: document.getElementById('b_ae'),
+      exempt: document.getElementById('exempt'), b_exempt: document.getElementById('b_exempt'),
+      outcome: document.getElementById('agreOutcome'),
+      tip: document.getElementById('tip2'), tipb: document.getElementById('tip2b'),
+      sum: document.getElementById('sum2'), sumb: document.getElementById('sum2b')
+    };
+
+    function renderAgreements(){
+      ['horizShare','evidence','transparency','verticalShare'].forEach(k=> A[k+'Val'].textContent = A[k].value);
+      const hs = +A.horizShare.value/100;
+      const ev = +A.evidence.value/100; const tr = +A.transparency.value/100; const vs = +A.verticalShare.value/100;
+
+      // Hardcore risk: horizontal types high baseline
+      const hardcoreBase = (A.horizType.value.match(/Price|Market|Bid|Output/) ? 0.7 : 0.4);
+      const hardcoreRisk = clamp01(hardcoreBase + 0.3*hs + 0.2*ev + 0.1*tr);
+      A.hardcore.textContent = pct(hardcoreRisk); A.b_hardcore.style.width = (hardcoreRisk*100).toFixed(0)+'%';
+
+      // Anticompetitive effects proxy
+      const effect = clamp01(0.5*hardcoreRisk + 0.2*tr + 0.15*hs + 0.15*vs);
+      A.ae.textContent = pct(effect); A.b_ae.style.width = (effect*100).toFixed(0)+'%';
+
+      // Exemption likelihood (EU 101(3) or efficiencies) decreases as effect rises
+      const exemption = clamp01(0.7 - 0.6*effect + 0.2*(1-vs));
+      A.exempt.textContent = pct(exemption); A.b_exempt.style.width = (exemption*100).toFixed(0)+'%';
+
+      // Outcome text
+      let txt = 'Further assessment needed';
+      if(hardcoreRisk>0.7) txt = 'High risk of infringement';
+      else if(effect>0.6) txt = 'Likely infringement unless exempted';
+      else if(exemption>0.6) txt = 'Potentially exemptible';
+      A.outcome.textContent = txt;
+
+      A.sum.textContent = `hardcore=${(hardcoreRisk*100).toFixed(0)}%  effects=${(effect*100).toFixed(0)}%  exempt=${(exemption*100).toFixed(0)}%`;
+    }
+    document.querySelectorAll('#panel-agreements input, #panel-agreements select').forEach(el=> el.addEventListener('input', renderAgreements));
+
+    // MERGER MODULE
+    const M = {
+      preHHI: document.getElementById('preHHI'), preHHIVal: document.getElementById('preHHIVal'),
+      deltaHHI: document.getElementById('deltaHHI'), deltaHHIVal: document.getElementById('deltaHHIVal'),
+      efficiencies: document.getElementById('efficiencies'), efficienciesVal: document.getElementById('efficienciesVal'),
+      entry: document.getElementById('entryMerger'), entryVal: document.getElementById('entryMergerVal'),
+      mergerType: document.getElementById('mergerType'), jur: document.getElementById('jurMerger'),
+      postHHI: document.getElementById('postHHI'), b_postHHI: document.getElementById('b_postHHI'),
+      screen: document.getElementById('screen'), harm: document.getElementById('harm'), b_harm: document.getElementById('b_harm'),
+      outcome: document.getElementById('mergerOutcome'), tip: document.getElementById('tip3'), tipb: document.getElementById('tip3b'),
+      sum: document.getElementById('sum3'), sumb: document.getElementById('sum3b')
+    };
+
+    function renderMerger(){
+      ['preHHI','deltaHHI','efficiencies','entry'].forEach(k=> M[k+'Val'].textContent = M[k].value);
+      const pre = +M.preHHI.value, d = +M.deltaHHI.value; const post = pre + d;
+      M.postHHI.textContent = post; M.b_postHHI.style.width = Math.min(100, post/100).toFixed(0)+'%';
+
+      // Screen flags inspired by common thresholds
+      let flag = 'No flag';
+      if(post>=2500 && d>=200) flag = 'High concern screen';
+      else if(post>=1500 && d>=100) flag = 'Moderate concern screen';
+      M.screen.textContent = flag;
+
+      // Harm proxy varies by merger type
+      const eff = +M.efficiencies.value/100; const entry = +M.entry.value/100;
+      let harm = 0.5*(post/10000) + 0.3*(d/5000) - 0.2*eff - 0.2*entry;
+      if(M.mergerType.value==='Vertical') harm += 0.15; // foreclosure risk proxy
+      if(M.mergerType.value==='Conglomerate') harm += 0.1; // portfolio effects proxy
+      harm = clamp01(harm);
+      M.harm.textContent = pct(harm); M.b_harm.style.width = (harm*100).toFixed(0)+'%';
+
+      // Outcome
+      let txt = 'Unlikely to raise concerns';
+      if(flag==='High concern screen' || harm>0.65) txt = 'Likely challenge/conditional approval';
+      else if(flag==='Moderate concern screen' || harm>0.5) txt = 'Possible remedies or further inquiry';
+      M.outcome.textContent = txt;
+
+      M.sum.textContent = `postHHI=${post}  ΔHHI=${d}  harm=${(harm*100).toFixed(0)}%`;
+    }
+    document.querySelectorAll('#panel-merger input, #panel-merger select').forEach(el=> el.addEventListener('input', renderMerger));
+
+    // Hover wiring: show sources in footer tips
+    function bindHoverSources(sectionId, map, footerTipIds){
+      const section = document.getElementById(sectionId);
+      const [tipA, tipB] = footerTipIds.map(id=> document.getElementById(id));
+      section.querySelectorAll('.slider, .kpi, select').forEach(el=>{
+        const key = el.dataset.key || el.dataset.key2 || el.dataset.key3 || el.dataset.out || el.dataset.out2 || el.dataset.out3;
+        el.addEventListener('mouseenter',()=>{
+          const arr = (map[key]||['No mapped sources']).slice(0,4);
+          const text = 'Sources: ' + arr.join(' | ');
+          if(tipA) tipA.textContent = text; if(tipB) tipB.textContent = text;
+        });
+        el.addEventListener('mouseleave',()=>{
+          if(tipA) tipA.textContent = 'Hover a control/metric for sources';
+          if(tipB) tipB.textContent = 'Hover a control/metric for sources';
+        })
+      })
+    }
+
+    bindHoverSources('panel-dominance', sourceMap.dominance, ['tip1','tip1b']);
+    bindHoverSources('panel-agreements', sourceMap.agreements, ['tip2','tip2b']);
+    bindHoverSources('panel-merger', sourceMap.merger, ['tip3','tip3b']);
+
+    // Initial renders
+    renderDominance();
+    renderAgreements();
+    renderMerger();
+  </script>
+</body>
+</html>
