@@ -56,6 +56,26 @@
     .muted{color:#9fb0cc}
     .rowline{height:1px;background:linear-gradient(90deg,transparent,rgba(124,192,255,.3),transparent);margin:6px 0}
     .warn{color:#ffd580}
+
+    /* Fix desktop overlap and sizing */
+    .row{ grid-template-columns: 380px minmax(0,1fr) }           /* allow right col to shrink */
+    .grid3{ grid-template-columns: repeat(3, minmax(0,1fr)) }    /* prevent intrinsic overflow */
+
+    .card{ position: relative; z-index: 0; overflow: visible; }
+    .card:focus-within{ z-index: 20; }                           /* bring active card above neighbor */
+    .panel{ overflow: visible; }
+
+    .tag select, .tag input{ width: 100%; max-width: 100%; }     /* controls fit their tag */
+    .tag label{ display:block; }                                 /* GUPPI mini-fields stack cleanly */
+
+    /* make dropdowns comfortable in narrow tag columns */
+    .tag input[type=number]{ box-sizing: border-box; padding:4px 6px; }
+
+    /* Ensure results card doesn’t overshadow inputs by default */
+    #panel-dominance .card:nth-child(1),
+    #panel-agreements .card:nth-child(1),
+    #panel-merger .card:nth-child(1){ z-index: 1; }
+
   </style>
 </head>
 <body>
