@@ -298,15 +298,20 @@
                 <option>Conglomerate</option>
               </select>
             </div>
-            <div class="tag">Jurisdiction
-              <select id="jurMerger">
-                <option value="us">US</option>
-                <option value="eu">EU</option>
-                <option value="india">India</option>
-              </select>
-            </div>
-           <!-- GUPPI Inputs -->
+            <!-- Jurisdiction selector -->
 <div class="input-group">
+  <label for="jurisdiction">Jurisdiction</label>
+  <select id="jurisdiction">
+    <option>US</option>
+    <option>EU</option>
+    <option>India</option>
+    <option>General</option>
+    <option>Other</option>
+  </select>
+</div>
+
+<!-- New row for GUPPI -->
+<div class="input-group guppi-row">
   <label>GUPPI parameters</label>
   <div class="guppi-block">
     <div>
@@ -323,6 +328,7 @@
     </div>
   </div>
 </div>
+
 
           </div>
 
